@@ -12,7 +12,18 @@ from rag_chain import build_rag_chain
 
 VECTOR_STORE = None
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(title="PDF RAG Backend")
+
+# Allow CORS for Next.js frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class QueryRequest(BaseModel):
@@ -22,6 +33,7 @@ class QueryRequest(BaseModel):
 class QueryResponse(BaseModel):
     question: str
     answer: str
+    context: list[str] = []
 
 
 class IngestResponse(BaseModel):
@@ -64,12 +76,18 @@ async def query(payload: QueryRequest):
 
     try:
         retriever = create_retriever(VECTOR_STORE)
+        
+        # Explicitly fetch the documents to return to the frontend for visualization
+        docs = retriever.invoke(payload.question)
+        retrieved_chunks = [doc.page_content for doc in docs]
+        
         rag_chain = build_rag_chain(retriever)
         answer = rag_chain.invoke(payload.question)
 
         return QueryResponse(
             question=payload.question,
-            answer=answer
+            answer=answer,
+            context=retrieved_chunks
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

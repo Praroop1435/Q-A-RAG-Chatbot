@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #000000;
+  --color-foreground: #fafafa;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #000000;
+  --foreground: #fafafa;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-mono), monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.hatched-pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #262626,
+    #262626 1px,
+    transparent 1px,
+    transparent 10px
+  );
+}
+
+::selection {
+  background-color: #262626;
+  color: #ffffff;
+}
