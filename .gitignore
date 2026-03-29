@@ -1,0 +1,38 @@
+# Environments
+.env
+.venv/
+venv/
+ENV/
+
+# Secrets (Just in case you add more)
+*.pem
+*.key
+*.cert
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# OS / Editor Files
+.DS_Store
+.idea/
+.vscode/
+
+# Build / Distribution
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Databases / Search Indexes (If you save FAISS locally later)
+*.db
+*.sqlite3
+faiss_index/
