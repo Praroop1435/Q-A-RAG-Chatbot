@@ -1,16 +1,7 @@
 from pathlib import Path
 from dotenv import load_dotenv
-import os
-import logging
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
-
-# Mirror the token to silence the "unauthenticated requests" warning from HuggingFace Hub
-if "HUGGINGFACEHUB_API_TOKEN" in os.environ:
-    os.environ["HF_TOKEN"] = os.environ["HUGGINGFACEHUB_API_TOKEN"]
-
-# Silence the harmless but annoying "BertModel LOAD REPORT" position_ids warnings from sentence_transformers
-logging.getLogger("sentence_transformers").setLevel(logging.ERROR)
 
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
